@@ -1,0 +1,73 @@
+
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brainbase - Tarefas</title>
+    <link rel="stylesheet" href="tarefas.css">
+</head>
+<body>
+    <div class="header">
+        <button class="logout">Logout</button>
+        <h1 class="title">BRAINBASE</h1>
+    </div>
+    <div class="container">
+        <h2>Tarefas a Fazer</h2>
+        <button id="nova-tarefa-btn" class="novo-projeto-btn">+ NOVA TAREFA</button>
+        <table class="tabela-tarefas">
+            <thead>
+                <tr>
+                    <th>Professor</th>
+                    <th>Matéria</th>
+                    <th>Dt de Entrega</th>
+                    <th>Descrição</th>
+                    <th>Ação</th>
+                </tr>
+            </thead>
+            <tbody id="tarefas-fazer-container">
+                <!-- Tarefas a fazer serão inseridas aqui -->
+            </tbody>
+        </table>
+
+        <h2>Tarefas Concluídas</h2>
+        <table class="tabela-tarefas">
+            <thead>
+                <tr>
+                    <th>Professor</th>
+                    <th>Matéria</th>
+                    <th>Dt de Entrega</th>
+                    <th>Descrição</th>
+                    <th>Ação</th>
+                </tr>
+            </thead>
+            <tbody id="tarefas-concluidas-container">
+                <!-- Tarefas concluídas serão inseridas aqui -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Modal para nova tarefa -->
+    <div id="modal" class="modal hidden">
+        <div class="modal-content">
+            <label for="professor">Professor:</label>
+            <input type="text" id="professor" placeholder="Nome do Professor" required />
+            
+            <label for="materia">Matéria:</label>
+            <input type="text" id="materia" placeholder="Nome da Matéria" required />
+            
+            <label for="data-entrega">Data de Entrega:</label>
+            <input type="date" id="data-entrega" required />
+            
+            <label for="descricao">Descrição:</label>
+            <textarea id="descricao" placeholder="Descrição da Tarefa" required></textarea>
+            
+            <button id="salvar-tarefa-btn">Salvar Tarefa</button>
+            <button id="cancelar-btn" class="cancelar-btn">Cancelar</button>
+        </div>
+    </div>
+
+    <script src="tarefas.js"></script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brainbase</title>
+    <link rel="stylesheet" href="Projetos CSS.css">
+</head>
+<body>
+    <div class="header">
+        <button class="logout">Logout</button>
+        <h1 class="title">BRAINBASE</h1>
+    </div>
+    <div class="container">
+        <h2>Projetos</h2>
+        <button id="novo-projeto-btn" class="novo-projeto-btn">+ NOVO PROJETO</button>
+        <div id="notas-container" class="notas-container"></div>
+    </div>
+
+
+    <div id="modal" class="modal hidden">
+        <div class="modal-content">
+            <input type="text" id="titulo-projeto" placeholder="Título do Projeto" />
+            <textarea id="nota-textarea" placeholder="Escreva os detalhes do projeto aqui..."></textarea>
+            <button id="salvar-nota-btn">Salvar Projeto</button>
+            <button id="cancelar-btn" class="cancelar-btn">Cancelar</button>
+        </div>
+    </div>
+
+    <script src="Projetos JS.js"></script>
+</body>
+</html>

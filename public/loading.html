@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Carregando...</title>
+  <link rel="stylesheet" href="loading.css">
+</head>
+<body>
+  <div class="loading-container" id="loadingContainer">
+    <div class="spinner"></div>
+    <p>Carregando...</p>
+  </div>
+
+  <div class="content" id="content">
+    <h1>Bem-vindo ao Brainbase</h1>
+    <p>Escolha uma opção abaixo para continuar:</p>
+    <button onclick="redirectTo('login')">Login</button>
+    <button onclick="redirectTo('cadastro')">Cadastro</button>
+  </div>
+
+  <script>
+    // Função para redirecionar para a página de login ou cadastro após o carregamento
+    function redirectTo(page) {
+      document.getElementById('loadingContainer').style.display = 'block';
+      document.getElementById('content').style.display = 'none';
+
+      setTimeout(function() {
+        if (page === 'login') {
+          window.location.href = '/login';
+        } else if (page === 'cadastro') {
+          window.location.href = '/cadastro';
+        }
+      }, 5000);
+    }
+  </script>
+</body>
+</html>
