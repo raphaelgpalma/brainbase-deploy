@@ -3,37 +3,40 @@ const path = require('path');
 const bodyParser = require('body-parser');
 
 const app = express();
+const port = 3000;
+
 const users = [];
 
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, '..', 'public')));  // Corrige o caminho
+
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'public', 'loading.html'));
+    res.sendFile(path.join(__dirname, 'public', 'loading.html'));
 });
 
 app.get('/cadastro', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'public', 'cadastro.html'));
+    res.sendFile(path.join(__dirname, 'public', 'cadastro.html'));
 });
 
 app.get('/projetos', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'public', 'ProjetosHTML.html'));
+    res.sendFile(path.join(__dirname, 'public', 'ProjetosHTML.html'));
 });
 
 app.get('/tarefas', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'public', 'tarefas.html'));
+    res.sendFile(path.join(__dirname, 'public', 'tarefas.html'));
 });
 
 app.get('/projetosEmGrupo', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'public', 'projetosEmGrupo.html'));
+    res.sendFile(path.join(__dirname, 'public', 'projetosEmGrupo.html'));
 });
 
 app.get('/login', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'public', 'login.html'));
+    res.sendFile(path.join(__dirname, 'public', 'login.html'));
 });
 
 app.get('/menu-inicial', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'public', 'menuInicial.html'));
+    res.sendFile(path.join(__dirname, 'public', 'menuInicial.html'));
 });
 
 app.post('/cadastro', (req, res) => {
@@ -53,6 +56,7 @@ app.post('/cadastro', (req, res) => {
     res.redirect('/login');
 });
 
+
 app.post('/login', (req, res) => {
     const { email, password } = req.body;
 
@@ -70,5 +74,6 @@ app.use((req, res) => {
     res.status(404).send('Página não encontrada');
 });
 
-// Exporta o app para a Vercel
-module.exports = app;
+app.listen(port, () => {
+    console.log(`Servidor rodando em http://localhost:${port}`);
+});
