@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brainbase - Projetos em Grupo</title>
+    <link rel="stylesheet" href="projetosEmGrupo.css">
+</head>
+<body>
+    <div class="header">
+        <button class="logout">Logout</button>
+        <h1 class="title">BRAINBASE</h1>
+    </div>
+    <div class="container">
+        <h2>Projetos em Grupo</h2>
+        <button id="novo-projeto-btn" class="novo-projeto-btn">+ NOVO PROJETO</button>
+        <table class="tabela-projetos">
+            <thead>
+                <tr>
+                    <th>Título do Projeto</th>
+                    <th>Integrantes do Grupo</th>
+                    <th>Descrição</th>
+                    <th>Ação</th>
+                </tr>
+            </thead>
+            <tbody id="projetos-container">
+                <!-- Projetos serão inseridos aqui -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Modal para novo projeto -->
+    <div id="modal" class="modal hidden">
+        <div class="modal-content">
+            <label for="titulo">Título do Projeto:</label>
+            <input type="text" id="titulo" placeholder="Nome do Projeto" required />
+            
+            <label for="integrantes">Integrantes do Grupo:</label>
+            <input type="text" id="integrantes" placeholder="Nome dos Integrantes" required />
+            
+            <label for="descricao">Descrição:</label>
+            <textarea id="descricao" placeholder="Descrição do Projeto" required></textarea>
+            
+            <button id="salvar-projeto-btn">Salvar Projeto</button>
+            <button id="cancelar-btn" class="cancelar-btn">Cancelar</button>
+        </div>
+    </div>
+
+    <!-- Modal para editar projeto -->
+    <div id="editar-modal" class="modal hidden">
+        <div class="modal-content">
+            <label for="editar-titulo">Título do Projeto:</label>
+            <input type="text" id="editar-titulo" required />
+            
+            <label for="editar-integrantes">Integrantes do Grupo:</label>
+            <input type="text" id="editar-integrantes" required />
+            
+            <label for="editar-descricao">Descrição:</label>
+            <textarea id="editar-descricao" required></textarea>
+            
+            <button id="salvar-edicao-btn">Salvar Alterações</button>
+            <button id="cancelar-edicao-btn" class="cancelar-btn">Cancelar</button>
+        </div>
+    </div>
+
+    <script src="projetosEmGrupo.js"></script>
+</body>
+</html>

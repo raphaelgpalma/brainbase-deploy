@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Brainbase Dashboard</title>
+  <link rel="stylesheet" href="Menuinicial.css">
+</head>
+<body>
+  <div class="dashboard-container">
+    <header>
+      <button class="logout-btn" onclick="window.location.href='http://localhost:3000/login'">Logout</button>
+      <h1>BRAINBASE</h1>
+    </header>
+    <main>
+      <section class="cards">
+        <button class="card" onclick="window.location.href='/tarefas'">
+          <h2>Tarefas</h2>
+          <p>Organize suas tarefas por disciplina, prioridade e data de vencimento.</p>
+        </button>
+        <button class="card" onclick="window.location.href='/projetos'">
+          <h2>Projetos</h2>
+          <p>Gerenciamento de projetos pessoais e profissionais.</p>
+        </button>
+        <button class="card" onclick="window.location.href='/projetosEmGrupo'">
+          <h2>Projetos em grupo</h2>
+          <p>Formação de grupos de estudo e trabalho em projetos colaborativos.</p>
+        </button>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
