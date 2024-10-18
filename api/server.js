@@ -1,41 +1,29 @@
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
+const fs = require('fs');  // Para manipular o JSON
 
 const app = express();
-const users = [];
+const usersFilePath = path.join(__dirname, 'users.json');
 
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, '..', 'public')));  // Corrige o caminho
+app.use(express.static(path.join(__dirname, '..', 'public')));
 
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'public', 'loading.html'));
-});
+// Função para ler usuários do JSON
+function loadUsers() {
+    if (fs.existsSync(usersFilePath)) {
+        const data = fs.readFileSync(usersFilePath, 'utf8');
+        return JSON.parse(data);
+    }
+    return [];
+}
 
-app.get('/cadastro', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'public', 'cadastro.html'));
-});
+// Função para salvar usuários no JSON
+function saveUsers(users) {
+    fs.writeFileSync(usersFilePath, JSON.stringify(users, null, 2));
+}
 
-app.get('/projetos', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'public', 'ProjetosHTML.html'));
-});
-
-app.get('/tarefas', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'public', 'tarefas.html'));
-});
-
-app.get('/projetosEmGrupo', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'public', 'projetosEmGrupo.html'));
-});
-
-app.get('/login', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'public', 'login.html'));
-});
-
-app.get('/menu-inicial', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'public', 'menuInicial.html'));
-});
-
+// Rota de cadastro
 app.post('/cadastro', (req, res) => {
     const { name, email, password, confirm_password } = req.body;
 
@@ -43,6 +31,7 @@ app.post('/cadastro', (req, res) => {
         return res.status(400).send('Senhas não conferem. <a href="/cadastro">Tente novamente</a>');
     }
 
+    let users = loadUsers();
     const userExists = users.some(user => user.email === email);
 
     if (userExists) {
@@ -50,12 +39,15 @@ app.post('/cadastro', (req, res) => {
     }
 
     users.push({ name, email, password });
+    saveUsers(users);
     res.redirect('/login');
 });
 
+// Rota de login
 app.post('/login', (req, res) => {
     const { email, password } = req.body;
 
+    const users = loadUsers();
     const user = users.find(user => user.email === email && user.password === password);
 
     if (!user) {
@@ -65,10 +57,9 @@ app.post('/login', (req, res) => {
     res.redirect('/menu-inicial'); 
 });
 
-// Roteia todas as outras solicitações para um 404
+// Roteia outras requisições para 404
 app.use((req, res) => {
     res.status(404).send('Página não encontrada');
 });
 
-// Exporta o app para a Vercel
 module.exports = app;
