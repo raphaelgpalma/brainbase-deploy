@@ -1,27 +1,32 @@
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
-const fs = require('fs');  // Para manipular o JSON
+const sqlite3 = require('sqlite3').verbose(); // Importa SQLite
 
 const app = express();
-const usersFilePath = path.join(__dirname, 'users.json');
+const db = new sqlite3.Database('./database.db'); // Conecta ao banco
+
+// Cria a tabela de usuários, se não existir
+db.run(`
+  CREATE TABLE IF NOT EXISTS users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT,
+    email TEXT UNIQUE,
+    password TEXT
+  )
+`);
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, '..', 'public')));
 
-// Função para ler usuários do JSON
-function loadUsers() {
-    if (fs.existsSync(usersFilePath)) {
-        const data = fs.readFileSync(usersFilePath, 'utf8');
-        return JSON.parse(data);
-    }
-    return [];
-}
-
-// Função para salvar usuários no JSON
-function saveUsers(users) {
-    fs.writeFileSync(usersFilePath, JSON.stringify(users, null, 2));
-}
+// Rotas de páginas HTML
+app.get('/', (req, res) => res.sendFile(path.join(__dirname, '..', 'public', 'loading.html')));
+app.get('/cadastro', (req, res) => res.sendFile(path.join(__dirname, '..', 'public', 'cadastro.html')));
+app.get('/projetos', (req, res) => res.sendFile(path.join(__dirname, '..', 'public', 'ProjetosHTML.html')));
+app.get('/tarefas', (req, res) => res.sendFile(path.join(__dirname, '..', 'public', 'tarefas.html')));
+app.get('/projetosEmGrupo', (req, res) => res.sendFile(path.join(__dirname, '..', 'public', 'projetosEmGrupo.html')));
+app.get('/login', (req, res) => res.sendFile(path.join(__dirname, '..', 'public', 'login.html')));
+app.get('/menu-inicial', (req, res) => res.sendFile(path.join(__dirname, '..', 'public', 'menuInicial.html')));
 
 // Rota de cadastro
 app.post('/cadastro', (req, res) => {
@@ -31,35 +36,38 @@ app.post('/cadastro', (req, res) => {
         return res.status(400).send('Senhas não conferem. <a href="/cadastro">Tente novamente</a>');
     }
 
-    let users = loadUsers();
-    const userExists = users.some(user => user.email === email);
+    const query = `INSERT INTO users (name, email, password) VALUES (?, ?, ?)`;
 
-    if (userExists) {
-        return res.status(400).send('Usuário já cadastrado. <a href="/login">Faça login</a>');
-    }
-
-    users.push({ name, email, password });
-    saveUsers(users);
-    res.redirect('/login');
+    db.run(query, [name, email, password], (err) => {
+        if (err) {
+            if (err.code === 'SQLITE_CONSTRAINT') {
+                return res.status(400).send('Usuário já cadastrado. <a href="/login">Faça login</a>');
+            }
+            return res.status(500).send('Erro no servidor.');
+        }
+        res.redirect('/login');
+    });
 });
 
 // Rota de login
 app.post('/login', (req, res) => {
     const { email, password } = req.body;
 
-    const users = loadUsers();
-    const user = users.find(user => user.email === email && user.password === password);
+    const query = `SELECT * FROM users WHERE email = ? AND password = ?`;
 
-    if (!user) {
-        return res.status(401).send('Credenciais inválidas. <a href="/login">Tente novamente</a>');
-    }
-
-    res.redirect('/menu-inicial'); 
+    db.get(query, [email, password], (err, user) => {
+        if (err) {
+            return res.status(500).send('Erro no servidor.');
+        }
+        if (!user) {
+            return res.status(401).send('Credenciais inválidas. <a href="/login">Tente novamente</a>');
+        }
+        res.redirect('/menu-inicial');
+    });
 });
 
-// Roteia outras requisições para 404
-app.use((req, res) => {
-    res.status(404).send('Página não encontrada');
-});
+// Rota 404
+app.use((req, res) => res.status(404).send('Página não encontrada'));
 
+// Exporta o app para a Vercel
 module.exports = app;
