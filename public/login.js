@@ -1,21 +1,6 @@
-document.querySelector('form').addEventListener('submit', async function(event) {
+document.querySelector('form').addEventListener('submit', function(event) {
     event.preventDefault();
 
-    const email = document.querySelector('#email').value;
-    const password = document.querySelector('#password').value;
-
-    const response = await fetch('/login', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        body: `email=${email}&password=${password}`
-    });
-
-    if (response.redirected) {
-        window.location.href = '/menu-inicial'; // Redireciona para o menu inicial
-    } else {
-        const result = await response.text();
-        document.body.innerHTML = result;
-    }
+    // Simula um login bem-sucedido (independente de credenciais)
+    window.location.href = '/menu-inicial'; // Redireciona sempre para o menu inicial
 });
